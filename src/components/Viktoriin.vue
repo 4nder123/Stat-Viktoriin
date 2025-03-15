@@ -41,13 +41,13 @@ export default {
     }
   },
   methods: {
-    submitQuestion(e) {
+    submitQuestion() {
       if(this.selectedAnswer === null) { this.error = "Palun vali vastus!"; return;}
       this.error = null;
       if(this.selectedAnswer === this.questions[this.current].correct && !this.showAnswer) { this.numOfCorrect++; }
       if(!this.showAnswer) { this.selectedAnswers.push(this.selectedAnswer); this.showAnswer = true; return; }
       this.showAnswer = false;
-      e.target.reset();
+      this.selectedAnswer = null;
       this.current++;
     },
     isAnswerCorrect(index){
@@ -55,7 +55,6 @@ export default {
     },
     reset() {
       this.selectedAnswers = [];
-      this.selectedAnswer = null;
       this.numOfCorrect = 0;
       this.current = 0;
     }
