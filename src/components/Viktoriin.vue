@@ -3,7 +3,7 @@
     <div class="error" v-if="error">{{ error }}</div>
     <form v-on:submit.prevent="submitQuestion">
       <h2>{{ questions[current].question }}</h2>
-      <label class="answers" :class=" {correct: showAnswer && isAnswerCorrect(index), wrong: showAnswer && !isAnswerCorrect(index)}" v-for="(answer, index) in questions[current].answers" :key="index">
+      <label class="answer" :class=" {correct: showAnswer && isAnswerCorrect(index), wrong: showAnswer && !isAnswerCorrect(index)}" v-for="(answer, index) in questions[current].answers" :key="index">
         <input type="radio" name="answer" :value="index" v-model="selectedAnswer" :disabled="showAnswer"/>
         {{ answer }}
       </label>
@@ -13,7 +13,14 @@
   </section>
   <section v-else>
     <h2>Läbi</h2>
-    <h3>{{ numOfCorrect + "/" + questions.length }}</h3>
+    <div class="questions" v-for="(question, qIndex) in questions" :key="qIndex">
+      <div>{{ question.question }}</div>
+      <label class="answer" :class="index === question.correct? 'correct':'wrong'" v-for="(answer, index) in question.answers" :key="index">
+        <input type="radio" :checked="index===selectedAnswers[qIndex]" disabled/>
+        {{ answer }}
+      </label>
+    </div>
+    <button @click="reset">Proovi uuesti</button>
   </section>
 </template>
 
@@ -25,6 +32,7 @@ export default {
       questions: [{question:"Mis on Eesti kõrgeim tipp?", answers:["Kerekunnu mägi","Suur Munamägi","Rohtõsuu mägi"], correct:1},
                 {question:"Kes oli Eesti esimene president?", answers:["Konstantin Päts","Toomas Hendrik Ilves","Arnold Rüütel"], correct:0},
                 {question:"Mitu saart on Eestil?", answers:["1562","983","2317"], correct:2}],
+      selectedAnswers: [],
       selectedAnswer: null,
       showAnswer: false,
       error: null,
@@ -37,13 +45,19 @@ export default {
       if(this.selectedAnswer === null) { this.error = "Palun vali vastus!"; return;}
       this.error = null;
       if(this.selectedAnswer === this.questions[this.current].correct && !this.showAnswer) { this.numOfCorrect++; }
-      if(!this.showAnswer) { this.showAnswer = true; return; }
+      if(!this.showAnswer) { this.selectedAnswers.push(this.selectedAnswer); this.showAnswer = true; return; }
       this.showAnswer = false;
       e.target.reset();
       this.current++;
     },
     isAnswerCorrect(index){
       return index === this.questions[this.current].correct;
+    },
+    reset() {
+      this.selectedAnswers = [];
+      this.selectedAnswer = null;
+      this.numOfCorrect = 0;
+      this.current = 0;
     }
   }
 }
@@ -66,12 +80,12 @@ export default {
     padding: 10px;
     margin-bottom: 10px;
   }
-  .answers {
+  .answer {
     white-space: nowrap;
     padding: 10px;
     margin: 5px;
   }
-  .answers input {
+  .answer input {
     margin: 16px 0px;
   }
   .correct {
