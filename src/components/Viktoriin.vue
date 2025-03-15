@@ -1,11 +1,87 @@
 <template>
+  <section v-if="current < questions.length">
+    <div class="error" v-if="error">{{ error }}</div>
+    <form v-on:submit.prevent="submitQuestion">
+      <h2>{{ questions[current].question }}</h2>
+      <label class="answers" :class=" {correct: showAnswer && isAnswerCorrect(index), wrong: showAnswer && !isAnswerCorrect(index)}" v-for="(answer, index) in questions[current].answers" :key="index">
+        <input type="radio" name="answer" :value="index" v-model="selectedAnswer" :disabled="showAnswer"/>
+        {{ answer }}
+      </label>
+      <button v-if="showAnswer" type="submit">Edasi</button>
+      <button v-else type="submit">Vasta</button>
+    </form>
+  </section>
+  <section v-else>
+    <h2>Läbi</h2>
+    <h3>{{ numOfCorrect + "/" + questions.length }}</h3>
+  </section>
 </template>
 
 <script>
 export default {
   name: 'Viktoriin',
+  data() {
+    return {
+      questions: [{question:"Mis on Eesti kõrgeim tipp?", answers:["Kerekunnu mägi","Suur Munamägi","Rohtõsuu mägi"], correct:1},
+                {question:"Kes oli Eesti esimene president?", answers:["Konstantin Päts","Toomas Hendrik Ilves","Arnold Rüütel"], correct:0},
+                {question:"Mitu saart on Eestil?", answers:["1562","983","2317"], correct:2}],
+      selectedAnswer: null,
+      showAnswer: false,
+      error: null,
+      numOfCorrect: 0,
+      current: 0,
+    }
+  },
+  methods: {
+    submitQuestion(e) {
+      if(this.selectedAnswer === null) { this.error = "Palun vali vastus!"; return;}
+      this.error = null;
+      if(this.selectedAnswer === this.questions[this.current].correct && !this.showAnswer) { this.numOfCorrect++; }
+      if(!this.showAnswer) { this.showAnswer = true; return; }
+      this.showAnswer = false;
+      e.target.reset();
+      this.current++;
+    },
+    isAnswerCorrect(index){
+      return index === this.questions[this.current].correct;
+    }
+  }
 }
 </script>
 
 <style scoped>
+  section {
+    margin: auto;
+    width: 50%;
+    text-align: center;
+  }
+  button {
+    display: block;
+    margin: auto;
+  }
+  .error {
+    background-color: #ffe6e6;
+    border: 1px solid #f00;
+    color: #f00;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+  .answers {
+    white-space: nowrap;
+    padding: 10px;
+    margin: 5px;
+  }
+  .answers input {
+    margin: 16px 0px;
+  }
+  .correct {
+    outline: 2px solid #0f0;
+    border-color: #0f0;
+    background-color: #e6ffe6;
+  }
+  .wrong {
+    outline: 2px solid #f00;
+    border-color: #f00;
+    background-color: #ffe6e6;
+  }
 </style>
