@@ -100,11 +100,15 @@ export default {
     background: #fff;
     color: #000;
   }
+  section:has(.error) form{
+    transform: translateY(-20px);
+  }
   .error {
     background: #ffe6e6;
     border: 1px solid #f00;
     color: #f00;
     padding: 10px;
+    transform: translateY(-25px);
   }
   .answer {
     white-space: nowrap;
