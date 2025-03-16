@@ -64,37 +64,73 @@ export default {
 
 <style scoped>
   section {
-    margin: auto;
-    width: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     text-align: center;
+    max-width: 700px;
+    min-height: 500px;
+    margin: 30px auto;
+    background: #fff;
+    padding: 25px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, .05);
+  }
+  h2 {
+    margin: 0px;
   }
   button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
     display: block;
-    margin: auto;
+    cursor: pointer;
+    margin: 5px auto;
+    padding: 10px 30px;
+    background: #000;
+    color: #fff;
+    border: 2px solid #000;
+    font-weight: bold;
+    transition: 0.2s ease;
+  }
+  button:hover {
+    background: #fff;
+    color: #000;
   }
   .error {
-    background-color: #ffe6e6;
+    background: #ffe6e6;
     border: 1px solid #f00;
     color: #f00;
     padding: 10px;
-    margin-bottom: 10px;
   }
   .answer {
     white-space: nowrap;
     padding: 10px;
+    margin: 6px auto;
+    border: 2px solid #ddd;
+    cursor: pointer;
+    background: #f9f9f9;
+    transition: 0.2s ease;
     margin: 5px;
   }
+  .answer:hover:not(.correct):not(.wrong) {
+    background: #f1f1f1;
+  }
   .answer input {
-    margin: 16px 0px;
+    margin: 20px 0px;
   }
   .correct {
-    outline: 2px solid #0f0;
-    border-color: #0f0;
+    cursor: context-menu;
     background-color: #e6ffe6;
+    border: 2px solid #0f0;
   }
   .wrong {
-    outline: 2px solid #f00;
-    border-color: #f00;
+    cursor: context-menu;
     background-color: #ffe6e6;
+    border: 2px solid #f00;
+  }
+  .questions {
+    text-align: center;
+    margin: 10px;
   }
 </style>
