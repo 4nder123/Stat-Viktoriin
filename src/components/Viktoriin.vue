@@ -12,7 +12,10 @@
     </form>
   </section>
   <section v-else>
-    <h2>Läbi</h2>
+    <h2 v-if="numOfCorrect===questions.length">Täiuslik!</h2>
+    <h2 v-else-if="numOfCorrect>questions.length/2">Hea!</h2>
+    <h2 v-else>Proovi uuesti!</h2>
+    <div>{{ numOfCorrect + "/" + questions.length }}</div>
     <div class="questions" v-for="(question, qIndex) in questions" :key="qIndex">
       <div>{{ question.question }}</div>
       <label class="answer" :class="index === question.correct? 'correct':'wrong'" v-for="(answer, index) in question.answers" :key="index">
