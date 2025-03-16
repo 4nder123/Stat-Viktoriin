@@ -1,5 +1,9 @@
 <template>
-  <section v-if="current < questions.length">
+  <section v-if="!hasStarted">
+    <h1>Eestimaa Viktoriin</h1>
+    <button @click="hasStarted = true">Mängi</button>
+  </section>
+  <section v-else-if="current < questions.length">
     <div class="error" v-if="error">{{ error }}</div>
     <form v-on:submit.prevent="submitQuestion">
       <h2>{{ questions[current].question }}</h2>
@@ -36,6 +40,7 @@ export default {
                 {question:"Kes oli Eesti esimene president?", answers:["Konstantin Päts","Toomas Hendrik Ilves","Arnold Rüütel"], correct:0},
                 {question:"Mitu saart on Eestil?", answers:["1562","983","2317"], correct:2}],
       selectedAnswers: [],
+      hasStarted: false,
       selectedAnswer: null,
       showAnswer: false,
       error: null,
@@ -60,6 +65,7 @@ export default {
       this.selectedAnswers = [];
       this.numOfCorrect = 0;
       this.current = 0;
+      this.hasStarted = false;
     }
   }
 }
@@ -80,7 +86,7 @@ export default {
     box-shadow: 0 4px 24px rgba(0, 0, 0, .05);
   }
   h2 {
-    margin: 0px;
+    margin-bottom: 5px;
   }
   button {
     -webkit-appearance: none;
